@@ -47,4 +47,10 @@ func main() {
 	var mm, nn = 100, "Letshi"
 	fmt.Println("mm =", mm, " nn =", nn)
 
+	//3. 多行多变量声明
+	var (
+		kk int  = 100
+		jj bool = true
+	)
+	fmt.Println("kk =", kk, " jj =", jj)
 }
