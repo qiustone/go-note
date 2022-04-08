@@ -1,2 +1,2 @@
 # go-note
-learn golang
+Learn Golang
