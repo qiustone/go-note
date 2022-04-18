@@ -38,7 +38,9 @@ func main() {
 	fmt.Println("=======================")
 
 	//定义一个子类的对象
+	//第一种方式
 	//s := SuperMan{Human{"li4", "female"}, 88}
+	//第二种方式
 	var s SuperMan
 	s.name = "li4"
 	s.sex = "female"
