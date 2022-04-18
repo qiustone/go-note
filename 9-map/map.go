@@ -2,6 +2,18 @@ package main
 
 import "fmt"
 
+func printMap(cityMap map[string]string) {
+	//cityMap 是一个引用传递
+	fmt.Println("=====================================")
+	for key, value := range cityMap {
+		fmt.Println("Key = ", key, "	val = ", value)
+	}
+}
+
+func changeValue(cityMap map[string]string) {
+	cityMap["England"] = "London"
+}
+
 func main() {
 	//============= 第一种声明方式 ================
 	//声明map类型, key和value都是string类型
@@ -35,4 +47,31 @@ func main() {
 		"three": "python",
 	}
 	fmt.Println(myMap3)
+
+	fmt.Println("=====================================")
+
+	//map的使用
+	cityMap := make(map[string]string)
+
+	//添加
+	cityMap["China"] = "Beijing"
+	cityMap["Japan"] = "Tokyo"
+	cityMap["USA"] = "NewYork"
+
+	//遍历
+	for key, value := range cityMap {
+		fmt.Println("Key = ", key, "	val = ", value)
+	}
+
+	//删除
+	delete(cityMap, "Japan")
+
+	//修改
+	cityMap["USA"] = "DC"
+
+	//默认是引用传递
+	changeValue(cityMap)
+
+	//传参
+	printMap(cityMap)
 }
