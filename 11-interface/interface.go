@@ -14,15 +14,15 @@ type Cat struct {
 	color string //猫的颜色
 }
 
-func (this *Cat) Sleep() {
+func (cat *Cat) Sleep() {
 	fmt.Println("Cat is Sleep")
 }
 
-func (this *Cat) GetColor() string {
-	return this.color
+func (cat *Cat) GetColor() string {
+	return cat.color
 }
 
-func (this *Cat) GetType() string {
+func (cat *Cat) GetType() string {
 	return "Cat"
 }
 
@@ -30,15 +30,15 @@ type Dog struct {
 	color string
 }
 
-func (this *Dog) Sleep() {
+func (dog *Dog) Sleep() {
 	fmt.Println("Dog is Sleep")
 }
 
-func (this *Dog) GetColor() string {
-	return this.color
+func (dog *Dog) GetColor() string {
+	return dog.color
 }
 
-func (this *Dog) GetType() string {
+func (dog *Dog) GetType() string {
 	return "Dog"
 }
 
