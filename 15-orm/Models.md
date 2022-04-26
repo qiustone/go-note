@@ -29,4 +29,61 @@ GORM 更倾向于约定，而不是配置。
 遵循 GORM 已有的约定，可以减少您的配置和代码量。  
 如果约定不符合您的需求，GORM 允许您自定义配置它们  
 
+<br>
+
 ### gorm.Model
+---
+GORM 内置了一个 `gorm.Model` 结构体， 其中包括字段`ID`,`CreatedAt`,`UpdatedAt`,`DeletedAt`
+```go
+type Model struct {
+    ID       uint         `gorm:"primaryKey"`
+    CreateAt time.Time
+    UpdateAt time.Time
+    DeleteAt gorm.DeleteAt `gorm:"index"`
+}
+```
+您可以将它嵌入到您的结构体中，以包含这几个字段
+
+<br>
+
+### 字段级权限(Field-Level Permission)
+---
+可导出的字段在使用GORM进行CRUD时拥有全部的权限，  
+此外，GORM允许您使用`标签`控制字段级别的权限。  
+这样您就可以让一个字段的权限是`只读`、`只写`、`只创建`、`只更新`或者被`忽略`  
+
+> 注意:使用 GORM Migrator 创建表时, 不会创建被忽略的字段
+
+```go
+type User struct {
+    Name string `gorm:"<-:create"`   // allow read and create
+    Name string `gorm:"<-:update"`   // allow read and update
+    Name string `gorm:"<-"`          // allow read and write (create and upate)
+    Name string `gorm:"<-:false"`    // allow read, disable write permission
+    Name string `gorm:"->"`          // readonly (disable write permission)
+    Name string `gorm:"->;<-create"` // allow read and create
+    Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+    Name string `gorm:"-"`           // ignore this field when write and read with struct
+    Name string `gorm:"-:all"`       // ignore this field when write, read and migrate with struct
+    Name string `gorm:"-:migration"` // ignore this field when migrate with struct
+}
+```
+
+<br>
+
+### 创建/更新时间追踪（纳秒、毫秒、秒、Time）
+----
+`GORM` 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了这种字段，`GORM` 在创建、更新时会自动填充当前时间
+
+要使用不同名称的字段，您可以配置 `autoCreateTime`、`autoUpdateTime` 标签  
+
+如果您想要保存 UNIX（毫/纳）秒时间戳，而不是 time，您只需简单地将 time.Time 修改为 int 即可
+```go
+type User struct {
+    CreatedAt time.Time  // 在创建时，如果该字段值为零值, 则使用当前时间填充
+    UpdatedAt int        // 在创建时该字段值为零值或者再更新时，使用当前时间戳秒数填充
+    Updated   int64 `gorm:"autoUpdateTime:nano"`  // 使用时间错纳秒数填充更新时间
+    Updated   int64 `gorm:"autoUpdateTime:milli"` // 使用时间戳毫秒数填充更新时间
+    Created   int64 `gorm:"autoCreateTime"`      // 使用时间戳秒数填充创建时间
+}
+```
