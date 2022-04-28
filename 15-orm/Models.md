@@ -88,7 +88,10 @@ type User struct {
 }
 ```
 
+<br>
+
 ### 嵌入结构体
+---
 对于匿名字段, GORM 会将其字段包含在父结构体中, 例如:
 ```go
 type User struct {
@@ -145,3 +148,28 @@ type Blog struct {
     Upvotes     int32
 }
 ```
+
+<br>
+
+### 字段标签
+---
+声明model时，tag 是可选的, GORM 支持以下 tag: tag名大小写不敏感，但建议使用camelCase风格
+
+| 标签名 | 说明 |
+| :-----| :---- |
+| column | 指定 db 列名 |
+| type | 列数据类型，推荐使用兼容性好的通用类型，例如: 所有数据库都支持`bool`、`int`、`uint`、`float`、`string`、`time`、`bytes` 并且可以和其他标签一起使用, 例如: `not null`、`size`、`autoIncrement`... 像`varbinary(8)`这样指定数据库数据类型也是支持的。在使用指定数据库类型时，它需要是完整的数据库数据类型，如: `MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT` |
+| size | 指定列大小，例如：`size:256` |
+| primaryKey | 指定列为主键 |
+| unique | 指定列为唯一 |
+| default | 指定列的默认值 |
+| precision | 指定列的精度 |
+| not null | 指定列为 NOT NULL |
+| autoIncrement | 指定列为自动增长 |
+| autoIncrementIncrement | 自动步长，控制连续记录之间的间隔 |
+| embedded | 嵌套字段 |
+| embeddedPrefix | 嵌入字段的列名前缀 |
+| autoCreateTime | 创建时追踪当前时间，对于 int 字段，它会追踪秒级时间戳，您可以使用nano/milli 来追踪纳秒毫秒时间戳，例如: autoCreateTime:"nano" |
+|  |  |
+|  |  |
+|  |  |
