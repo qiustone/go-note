@@ -84,6 +84,64 @@ type User struct {
     UpdatedAt int        // 在创建时该字段值为零值或者再更新时，使用当前时间戳秒数填充
     Updated   int64 `gorm:"autoUpdateTime:nano"`  // 使用时间错纳秒数填充更新时间
     Updated   int64 `gorm:"autoUpdateTime:milli"` // 使用时间戳毫秒数填充更新时间
-    Created   int64 `gorm:"autoCreateTime"`      // 使用时间戳秒数填充创建时间
+    Created   int64 `gorm:"autoCreateTime"`       // 使用时间戳秒数填充创建时间
+}
+```
+
+### 嵌入结构体
+对于匿名字段, GORM 会将其字段包含在父结构体中, 例如:
+```go
+type User struct {
+    gorm.Model
+    Name string
+}
+
+//等效于
+
+type User struct {
+    ID        uint           `gorm:"primaryKey"` 
+    CreatedAt time.Time
+    UpdatedAt time.Time
+    DeletedAt gorm.DeletedAt `gorm:"index"`
+    Name      string
+}
+```
+对于正常的结构体字段，你也可以通过标签 embedded 将其嵌入, 例如:
+```go
+type Author struct {
+    Name  string
+    Email string
+}
+
+type Blog struct {
+    ID      int
+    Author  Author `gorm:"embedded"`
+    Upovtes int32
+}
+
+//等效于
+
+type Blog struct {
+    ID      int
+    Name    string
+    Email   string
+    Upvotes int32
+}
+```
+并且，您可以使用标签 `embeddedPrefix` 来为`db`中的字段名添加前缀, 例如:
+```go
+type Blog struct {
+    ID      int
+    Author  Author `gorm:"embedded;embeddedPrefix:author_"`
+    Upvotes int32
+}
+
+//等效于
+
+type Blog struct {
+    ID          int
+    AuthorName  string
+    AuthorEmail string
+    Upvotes     int32
 }
 ```
