@@ -170,6 +170,11 @@ type Blog struct {
 | embedded | 嵌套字段 |
 | embeddedPrefix | 嵌入字段的列名前缀 |
 | autoCreateTime | 创建时追踪当前时间，对于 int 字段，它会追踪秒级时间戳，您可以使用nano/milli 来追踪纳秒毫秒时间戳，例如: autoCreateTime:"nano" |
-|  |  |
-|  |  |
-|  |  |
+| autoUpdateTime | 创建/更新时追踪当前时间，对于 int 字段，它会追踪秒级时间戳，您可以使用 nano/milli 来追踪纳秒、毫秒时间戳，例如：autoUpdateTime:"milli" |
+| index | 根据参数创建索引，多个字段使用相同的名称则创建复合索引 |
+| uniqueIndex | 与 index 相同，但创建的是唯一索引 |
+| check | 创建检查约束，例如 check:age > 13 |
+| <- | 设置字段写入的权限， <-:create 只创建、<-:update 只更新、<-:false 无写入权限、<- 创建和更新权限 |
+| -> | 设置字段读的权限，->:false 无读权限 |
+| - | 忽略这个字段, - 无读写权限, -:migration 无迁移权限, -:all 无读写迁移权限 |
+| comment | 迁移时为字段添加注释 |
