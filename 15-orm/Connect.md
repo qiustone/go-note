@@ -22,10 +22,24 @@ MySQL 驱动程序提供了一些高级配置可以在初始化过程中使用�
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
     DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local", // DSN data source name
-    DefaultStringSize: 256, // string 类型字段的默认长度
-    DisableDatetimePrecision: true, // 禁用datetime精度, MySQL5.6之前的数据库不支持
-    DontSupportRenameIndex: true, // 重命名索引时采用删除并新建的方式, MySQL5.7之前的数据库和 MariaDB 不支持重命名索引
-    DontSupportRenameColumn: true, // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
+    DefaultStringSize: 256,           // string 类型字段的默认长度
+    DisableDatetimePrecision: true,   // 禁用datetime精度, MySQL5.6之前的数据库不支持
+    DontSupportRenameIndex: true,     // 重命名索引时采用删除并新建的方式, MySQL5.7之前的数据库和 MariaDB 不支持重命名索引
+    DontSupportRenameColumn: true,    // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
     SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 }), &gorm.Config{})
+```
+
+### 自定义驱动
+GORM 允许通过DriverName 选项自定义MySQL驱动, 例如:
+```go
+import (
+    _ "example.com/my_mysql_driver"
+    "gorm.io/gorm"
+)
+
+db, err := gorm.Open(mysql.New(mysql.Config{
+    DriverName: "my_mysql_driver",
+    DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // Data Source Name
+}), &grom.Config{})
 ```
